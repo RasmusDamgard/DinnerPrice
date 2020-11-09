@@ -19,8 +19,7 @@ class Dish:
             price += ingredient.UnitPrice * amount
         return price
 
-    def PrettyPrint(self):
-        print("{0} - Price: {1}".format(self.Name, self.Price()))
+    def IngredientList(self):
         for i in range(len(self.Recipe)):
             print("  Item #{0}: {1} {2} of {3}".format(i, self.Recipe[i][1], self.Recipe[i][0].UnitName, self.Recipe[i][0].Name))
 
@@ -43,27 +42,20 @@ dishes = {
     #"fried rice":
 }
 
-myCarbonara = dishes["carbonara"]
+Carbonara = dishes["carbonara"]
 
-myCarbonara.PrettyPrint()
+print(Carbonara.Price())
 
 
-#def IsStringValid(dish):
-#    dishLower = dish.lower()
-#    if dishLower in list(dishesIngre.keys()):
-#        return True
-#    return False
 
-#usefullInput = False 
-#while not usefullInput:
-#    userDish = input("What dish do you want to make?")
-#    if IsStringValid(userDish):
-#        break
-    
-#userDish = userDish.lower()
+def IsStringValid(dish):
+    dishLower = dish.lower()
+    if dishLower in list(dishes.keys()):
+        return True
+    return False
 
-#price = 0
-#for i in dishesIngre[userDish]:
-#    price += ingrePrice[str(i)]
-
-#print("The price of " + str(userDish) + " is " + str(price) + " kroner")
+usefullInput = False 
+while not usefullInput:
+    userDish = input("What dish do you want to make?")
+    if IsStringValid(userDish):
+        break

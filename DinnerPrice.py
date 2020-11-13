@@ -42,20 +42,47 @@ dishes = {
     #"fried rice":
 }
 
-Carbonara = dishes["carbonara"]
+spaghettiCarbonara = dishes["carbonara"]
 
-print(Carbonara.Price())
+dishesVar = {
+    "spaghettiCarbonara": spaghettiCarbonara
+}
 
+def TransformToVar(string):
+    string = string.lower()
+    string = string.strip(" ")
+    raiseChar = string.rfind(" ")
+    if raiseChar != -1:
+        char  = string[raiseChar+1]
+        char  = char.upper()
+        string = string[:raiseChar+1] + char + string[raiseChar+1 + 1:]
+    string = string.replace(" ", "")
+    return string
 
-
-def IsStringValid(dish):
-    dishLower = dish.lower()
-    if dishLower in list(dishes.keys()):
-        return True
-    return False
-
-usefullInput = False 
-while not usefullInput:
-    userDish = input("What dish do you want to make?")
-    if IsStringValid(userDish):
+isDone = False 
+while not isDone:
+    action = input("What do you want to do?")
+    action = action.lower()
+    action = action.strip()
+    if action == "tell":
+        dish = input("What dish do you want the ingredients of?")
+        dish = TransformToVar(dish)
+        if dish not in list(dishesVar.keys()):
+            print("That is not a dish")
+            continue
+        print(dishesVar[dish].IngredientList())
         break
+    elif action == "price":
+        dish = input("What dish do you want the price of?")
+        dish = TransformToVar(dish)
+        if dish not in list(dishesVar.keys()):
+            print("That is not a dish")
+            continue
+        print(dishesVar[dish].Price())
+        break
+    elif action == "use":
+        print("use")
+        break
+    else:
+        print("Not a valid input")
+        continue

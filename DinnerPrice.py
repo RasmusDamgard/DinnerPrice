@@ -4,22 +4,36 @@ class Ingredient:
         self.UnitPrice = unitprice
         self.UnitName = unitname
 
+    def __eq__(self,ingredient2):
+        return self.Name == ingredient2.Name
+
+    def __str__(self):
+        return self.Name
 #a recipe is a list of tuples each containing (Ingredient, Amount)
 
 class Dish:
     def __init__(self, name, recipe):
         self.Name = name
         self.Recipe = recipe
+        self.IngredientList = [tup[0] for tup in recipe]
+
+    def __str__(self):
+        return self.Name
 
     def Price(self):
         price = 0
+
         for point in self.Recipe:
             ingredient = point[0]
             amount = point[1]
             price += ingredient.UnitPrice * amount
         return price
 
-    def IngredientList(self):
+    def HasIngredient(self, ingredientUse):
+        return ingredientUse in self.IngredientList
+
+
+    def PrintIngredients(self):
         for i in range(len(self.Recipe)):
             print("  Item #{0}: {1} {2} of {3}".format(i, self.Recipe[i][1], self.Recipe[i][0].UnitName, self.Recipe[i][0].Name))
 
@@ -70,7 +84,8 @@ while not isDone:
         if dish not in list(dishesVar.keys()):
             print("That is not a dish")
             continue
-        print(dishesVar[dish].IngredientList())
+        print(dishesVar[dish].PrintIngredients())
+        ##Den er har en ekstra
         break
     elif action == "price":
         dish = input("What dish do you want the price of?")
@@ -81,8 +96,35 @@ while not isDone:
         print(dishesVar[dish].Price())
         break
     elif action == "use":
-        print("use")
+        ingredientString = input("What ingredient do you want to use?")
+        while not ingredientString in ingredients:
+            ingredientString = input("What ingredient do you want to use?")
+
+        ingredient = ingredients[ingredientString]
+        useAmount = input("How much {0} do you want to use? In {1}".format(ingredient.Name, ingredient.UnitName))
+        useAmount = useAmount.replace(",", ".")
+        useAmount = float(useAmount)
+        ####hvad gør man her?
+
+        containsIngredient = {}
+        for dish in dishes.values(): 
+            print(dish)
+            print(dish.IngredientList)
+            for i in range(len(dish.Recipe)):
+                if dish.Recipe[i][0] == ingredient:
+                    formerAmount = dish.Recipe[i][1]
+                    if formerAmount < useAmount:
+                        useAmount = formerAmount
+                    newPrice = dish.Price()-useAmount*ingredient.UnitPrice
+                    print(dish.Price())
+                    print(newPrice)
+                    containsIngredient[dish] = newPrice
+        print(containsIngredient)
         break
     else:
         print("Not a valid input")
         continue
+
+#make dish name pretty
+#make sure u can only input the intended type
+#smart måde at lave nye dishes og ingredients med google sheets

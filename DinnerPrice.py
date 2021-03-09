@@ -34,8 +34,15 @@ class Dish:
 
 
     def PrintIngredients(self):
-        for i in range(len(self.Recipe)):
-            print("  Item #{0}: {1} {2} of {3}".format(i, self.Recipe[i][1], self.Recipe[i][0].UnitName, self.Recipe[i][0].Name))
+        for tup in self.Recipe:
+            print("{0} {1} of {2}".format(tup[1], tup[0].UnitName, tup[0].Name))
+
+def InputTest(input):
+    try:
+        float(input)
+        return True
+    except ValueError:
+        return False
 
 ingredients = {
     "rice": Ingredient("rice", 3.25, "kg"),
@@ -103,8 +110,9 @@ while not isDone:
         ingredient = ingredients[ingredientString]
         useAmount = input("How much {0} do you want to use? In {1}".format(ingredient.Name, ingredient.UnitName))
         useAmount = useAmount.replace(",", ".")
+        while not InputTest(useAmount):
+            useAmount = input("How much {0} do you want to use? In {1}".format(ingredient.Name, ingredient.UnitName))
         useAmount = float(useAmount)
-        ####hvad gør man her?
 
         containsIngredient = {}
         for dish in dishes.values(): 
@@ -126,5 +134,4 @@ while not isDone:
         continue
 
 #make dish name pretty
-#make sure u can only input the intended type
 #smart måde at lave nye dishes og ingredients med google sheets
